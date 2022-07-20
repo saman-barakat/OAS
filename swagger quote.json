@@ -1,0 +1,133 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Project title",
+    "description": "Describtion",
+    "contact": {
+      "name": "name",
+      "email": "email@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/quote": {
+      "post": {
+        "tags": [
+          "QUOTE Rules Engine App"
+        ],
+        "summary": "Returns the list of documents to be packaged as part of a edi quote rules.",
+        "operationId": "QUOTE-Rules-Engine-App",
+        "requestBody": {
+          "description": "Optional description",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuoteOfferRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteOfferResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid operation"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProgramResult": {
+        "type": "object",
+        "properties": {
+          "ruleSet": {
+            "type": "string"
+          },
+          "rulesLocationId": {
+            "type": "string"
+          },
+          "quoteResult": {
+            "type": "string"
+          }
+        }
+      },
+      "QuoteOfferRequest": {
+        "type": "object",
+        "properties": {
+          "quoteCaseData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuoteCaseData"
+            }
+          }
+        }
+      },
+      "QuoteOfferResponse": {
+        "type": "object",
+        "properties": {
+          "quoteCaseData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProgramResult"
+            }
+          }
+        }
+      },
+      "QuoteCaseData": {
+        "type": "object",
+        "properties": {
+          "smokerCode": {
+            "type": "string"
+          },
+          "tobaccoStatus": {
+            "type": "string"
+          },
+          "programCode": {
+            "type": "string"
+          },
+          "offerClassCode": {
+            "type": "string"
+          },
+          "flatExtra": {
+            "type": "string"
+          },
+          "rider": {
+            "type": "string"
+          },
+          "vendorRequirement": {
+            "type": "string"
+          },
+          "acceptAmtSubsRequirAmt": {
+            "type": "number"
+          },
+          "acceptedAmt": {
+            "type": "number"
+          },
+          "requestedAmt": {
+            "type": "number"
+          },
+          "customeTxt": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
