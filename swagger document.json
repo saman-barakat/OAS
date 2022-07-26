@@ -1,129 +1,144 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "Project title",
-    "description": "Describtion",
-    "contact": {
-      "name": "name",
-      "email": "email@gmail.com"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:8080",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/document": {
-      "post": {
-        "tags": [
-          "Document Rules Engine App"
-        ],
-        "summary": "Returns the list of documents to be packaged as part of a reinsurance image rules.",
-        "operationId": "Document-Rules-Engine-App",
-        "requestBody": {
-          "description": "Optional description",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DocumentPackageRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentPackageResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid operation"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "DocumentCaseData": {
-        "type": "object",
-        "properties": {
-          "reqType": {
-            "type": "string"
-          },
-          "reinsuranceProgram": {
-            "type": "string"
-          },
-          "policyType": {
-            "type": "string"
-          }
-        }
-      },
-      "DocumentPackageRequest": {
-        "type": "object",
-        "properties": {
-          "DocumentCaseData": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DocumentCaseData"
-            }
-          }
-        }
-      },
-      "DocumentsResult": {
-        "type": "object",
-        "properties": {
-          "documentId": {
-            "type": "integer"
-          },
-          "documentType": {
-            "type": "string"
-          },
-          "destination": {
-            "type": "string"
-          }
-        }
-      },
-      "ProgramResult": {
-        "type": "object",
-        "properties": {
-          "ruleSet": {
-            "type": "string"
-          },
-          "rulesLocationId": {
-            "type": "string"
-          },
-          "packageProcedure": {
-            "type": "string"
-          },
-          "documentsList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DocumentsResult"
-            }
-          }
-        }
-      },
-      "DocumentPackageResponse": {
-        "type": "object",
-        "properties": {
-          "documentPackageResult": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProgramResult"
-            }
-          }
-        }
-      }
-    }
-  }
+"openapi": "3.0.1",
+"info": {
+"title": "nb-reinsurance-document-rules-ms",
+"description": "nb-reinsurance-document-rules-ms",
+"version": "0.0.1"
+},
+"servers": [
+{
+"url": "http://localhost:8443/api/nb-reinsurance-document-rules-ms",
+"description": "Generated server url"
+}
+],
+"paths": {
+"/document": {
+"post": {
+"tags": [
+"Document Rules Engine App"
+],
+"summary": "Returns the list of documents to be packaged as part of a reinsurance image rules",
+"operationId": "packageInfo",
+"requestBody": {
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/DocumentCaseData"
+}
+}
+},
+"required": true
+},
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ProgramResult"
+}
+}
+}
+}
+}
+}
+}
+},
+"components": {
+"schemas": {
+"DocumentCaseData": {
+"required": [
+"applicationType",
+"reinsuranceProgram",
+"reinsuranceType"
+],
+"type": "object",
+"properties": {
+"reinsuranceType": {
+"type": "string"
+},
+"reinsuranceProgram": {
+"type": "string"
+},
+"multipleAppCode": {
+"type": "integer",
+"format": "int32"
+},
+"traceID": {
+"type": "string"
+},
+"employerSponsored": {
+"type": "string"
+},
+"applicationType": {
+"type": "string"
+},
+"groupCoverageTypeCode": {
+"type": "string"
+},
+"conversionType": {
+"type": "string"
+},
+"underwritingAmount": {
+"type": "integer",
+"format": "int32"
+},
+"internalStatus": {
+"type": "string"
+},
+"underwriterCaseNum": {
+"type": "string"
+}
+}
+},
+"DocumentsResult": {
+"type": "object",
+"properties": {
+"documentTypeCode": {
+"type": "integer",
+"format": "int32"
+},
+"documentCategoryCode": {
+"type": "integer",
+"format": "int32"
+},
+"documentTypeText": {
+"type": "string"
+},
+"mandatory": {
+"type": "boolean"
+}
+}
+},
+"ProgramResult": {
+"required": [
+"reinsuranceType",
+"ruleSet",
+"rulesLocationId",
+"traceId"
+],
+"type": "object",
+"properties": {
+"reinsuranceType": {
+"type": "string"
+},
+"ruleSet": {
+"type": "string"
+},
+"rulesLocationId": {
+"type": "string"
+},
+"traceId": {
+"type": "string"
+},
+"documents": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/DocumentsResult"
+}
+}
+}
+}
+}
+}
 }
