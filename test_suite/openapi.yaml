@@ -3,7 +3,7 @@ info:
   description: "This is a sample server"
   version: "1.0.0"
   title: "Swagger Example"
-host: "localhost:8080"
+host: "localhost:8082"
 basePath: "/api"
 schemes:
   - "http"
@@ -78,10 +78,6 @@ paths:
   /oneDependencyRequires:
     get:
       parameters:
-        - name: "px"
-          in: "path"
-          required: false
-          type: "string"
         - name: "p1"
           in: "query"
           required: false
@@ -1090,109 +1086,4 @@ paths:
         - p4*p5>=4;
         - IF Or(p1==false, p4>3) OR NOT ZeroOrOne(p2=='value2', p3=='value5') THEN p2!=p3 AND OnlyOne(p1, p2);
         - IF p4+p5<=5 AND p4*p5>=4 THEN p2=='this is the only invalid dependency';
-  /conflictiveParameterNames:
-    get:
-      parameters:
-        - name: "type"
-          in: "query"
-          required: false
-          type: "boolean"
-        - name: "constraint"
-          in: "query"
-          required: true
-          type: "boolean"
-        - name: "with_underscore"
-          in: "query"
-          required: false
-          type: "boolean"
-        - name: "Accept-Language"
-          in: "query"
-          required: true
-          type: "boolean"
-        - name: "index:set"
-          in: "query"
-          required: false
-          type: "boolean"
-        - name: "something[one]"
-          in: "query"
-          required: true
-          type: "string"
-        - name: "something[two]"
-          in: "query"
-          required: false
-          type: "string"
-        - name: "b.b"
-          in: "query"
-          required: true
-          type: "string"
-        - name: "p9"
-          in: "query"
-          required: false
-          type: "string"
-        - name: "p10"
-          in: "query"
-          required: true
-          type: "string"
-      responses:
-        default:
-          description: "Default"
-      x-dependencies:
-        - IF constraint THEN [Accept-Language]; // Useless/redundant dependency, but valid
-        - IF type THEN (with_underscore==true OR (NOT with_underscore)) AND NOT [something[two]] AND p9=='fixed string';
-        - Or(type, with_underscore, [index:set] AND [something[two]], p9 AND type);
-        - NOT Or(type==true, constraint==true, with_underscore==false);
-        - NOT AllOrNone([something[two]] AND p9, b.b=='something', [index:set] AND p10=='example');
-        - AllOrNone(type, [index:set]);
-        - NOT ZeroOrOne(type, [index:set], [something[two]], constraint==false, [something[one]]=='example');
-        - ZeroOrOne(type, with_underscore);
-        - AllOrNone([something[one]]!=b.b, b.b==p10);
-        - ZeroOrOne(OnlyOne([index:set]==false, [Accept-Language]==true), OnlyOne([Accept-Language], [Accept-Language]==true), OnlyOne([Accept-Language]==true, [something[one]]));
-  /conflictiveParameterNames2:
-    get:
-      parameters:
-        - name: "type"
-          in: "query"
-          required: false
-          type: "boolean"
-        - name: "constraint"
-          in: "query"
-          required: true
-          type: "boolean"
-        - name: "with_underscore"
-          in: "query"
-          required: false
-          type: "boolean"
-        - name: "Accept-Language"
-          in: "query"
-          required: true
-          type: "boolean"
-        - name: "index:set"
-          in: "query"
-          required: false
-          type: "boolean"
-        - name: "something[one]"
-          in: "query"
-          required: true
-          type: "string"
-        - name: "something[two]"
-          in: "query"
-          required: false
-          type: "string"
-        - name: "b.b"
-          in: "query"
-          required: true
-          type: "string"
-        - name: "c.c"
-          in: "query"
-          required: false
-          type: "string"
-        - name: "p10"
-          in: "query"
-          required: true
-          type: "string"
-      responses:
-        default:
-          description: "Default"
-      x-dependencies:
-        - IF type THEN (with_underscore==true OR (NOT with_underscore)) AND NOT [something[two]];
-        - AllOrNone([something[one]]!=b.b, b.b==p10);
+
