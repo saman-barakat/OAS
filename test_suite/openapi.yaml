@@ -1,12 +1,12 @@
-openapi: 3.0.0
+swagger: "2.0"
 info:
   description: "This is a sample server"
   version: "1.0.0"
   title: "Swagger Example"
-host: "localhost:8082"
-basePath: "/api"
-schemes:
-  - "http"
+# host: "localhost:8082"
+# basePath: "/api"
+# schemes:
+#   - "http"
 paths:
   /noParams:
     get:
@@ -1086,4 +1086,9 @@ paths:
         - p4*p5>=4;
         - IF Or(p1==false, p4>3) OR NOT ZeroOrOne(p2=='value2', p3=='value5') THEN p2!=p3 AND OnlyOne(p1, p2);
         - IF p4+p5<=5 AND p4*p5>=4 THEN p2=='this is the only invalid dependency';
-
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /saman-barakat/example/1.0.0
+schemes:
+ - https
+ - http
