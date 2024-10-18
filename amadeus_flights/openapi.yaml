@@ -189,6 +189,10 @@ paths:
         - adults + children <= 9;
       responses:
         200:
-          description: OK.
+          description: "Successful response"
         400:
-          description: bad request
+          description: "Bad Request"
+x-generatedAt: 2020-08-03T13:16:56.309Z
+servers:
+  #- url: https://test.api.amadeus.com/v2
+   - url: http://idl.us.es/idlgateway/v2
