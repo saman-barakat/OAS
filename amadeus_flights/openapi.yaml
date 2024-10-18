@@ -1,0 +1,218 @@
+openapi: 3.0.0
+info:
+  version: 2.5.4
+  title: Flight Offers Search
+  x-tags:
+    - "#online-retail"
+    - "#mobile-services"
+    - "#ama-for-dev"
+  x-status: validated
+  x-release-note:
+    2.5.0:
+      - Add Expanded parameters criterias in flight-offers search
+    2.4.0:
+      - Add new sources "LTC" and "EAC"
+    2.3.0:
+      - Add Farerules into POST Search flight-offer reply
+    2.2.0:
+      - Add maxPrice filtering
+    2.1.0:
+      - Add currencies, aircraft and carriers dictionary
+    2.0.0:
+      - Initial Version
+      - Includes search and price flight offer
+  description: >-
+    
+    Before using this API, we recommend you read our **[Authorization Guide](https://developers.amadeus.com/self-service/apis-docs/guides/authorization-262)** for more information on how to generate an access token. 
+
+
+    Please also be aware that our test environment is based on a subset of the production, if you are not returning any results try with big cities/airports like LON (London) or NYC (New-York).
+paths:
+  /shopping/flight-offers:
+#    post:
+#      tags:
+#        - Shopping
+#      operationId: searchFlightOffers
+#      summary: Return list of Flight Offers based on posted searching criteria.
+#      parameters:
+#        - $ref: "#/components/parameters/getOverride"
+#      requestBody:
+#        content:
+#          application/vnd.amadeus+json:
+#            schema:
+#              $ref: "#/components/schemas/GetFlightOffersQuery"
+#        description: list of criteria to retrieve a list of flight offers
+#        required: true
+#      responses:
+#        "200":
+#          $ref: "#/components/responses/returnAirOffers"
+#        "400":
+#          $ref: "#/components/responses/400_Search"
+#        default:
+#          $ref: "#/components/responses/500"
+#      description: ""
+    get:
+      tags:
+        - Shopping
+      operationId: getFlightOffers
+      summary: Return list of Flight Offers based on searching criteria.
+      parameters:
+        - name: originLocationCode
+          in: query
+          description: city/airport [IATA
+            code](http://www.iata.org/publications/Pages/code-search.aspx) from
+            which the traveler will depart, e.g. BOS for Boston
+          required: true
+          example: SYD
+          schema:
+            type: string
+            pattern: "[A-Z]{3}"
+        - name: destinationLocationCode
+          in: query
+          description: city/airport [IATA
+            code](http://www.iata.org/publications/Pages/code-search.aspx) to
+            which the traveler is going, e.g. PAR for Paris
+          required: true
+          example: BKK
+          schema:
+            type: string
+            pattern: "[A-Z]{3}"
+        - name: departureDate
+          in: query
+          description: the date on which the traveler will depart from the origin to go to
+            the destination. Dates are specified in the [ISO
+            8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-DD format,
+            e.g. 2017-12-25
+          required: true
+          example: 2022-11-01
+          schema:
+            type: string
+            format: date
+        - name: returnDate
+          in: query
+          description: the date on which the traveler will depart from the destination to
+            return to the origin. If this parameter is not specified, only
+            one-way itineraries are found. If this parameter is specified, only
+            round-trip itineraries are found. Dates are specified in the [ISO
+            8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-DD format,
+            e.g. 2018-02-28
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: adults
+          in: query
+          description: the number of adult travelers (age 12 or older on date of departure).
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 9
+            default: 1
+        - name: children
+          in: query
+          description: the number of child travelers (older than age 2 and younger than age
+            12 on date of departure) who will each have their own separate seat.
+            If specified, this number should be greater than or equal to 0
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 9
+        - name: infants
+          in: query
+          description: the number of infant travelers (whose age is less or equal to 2 on
+            date of departure). Infants travel on the lap of an adult traveler,
+            and thus the number of infants must not exceed the number of adults.
+            If specified, this number should be greater than or equal to 0
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 9
+        - name: travelClass
+          in: query
+          description: most of the flight time should be spent in a cabin of this quality
+            or higher. The accepted travel class is economy, premium economy,
+            business or first class. If no travel class is specified, the search
+            considers any travel class
+          required: false
+          schema:
+            type: string
+            enum:
+              - ECONOMY
+              - PREMIUM_ECONOMY
+              - BUSINESS
+              - FIRST
+        - name: includedAirlineCodes
+          in: query
+          description: >
+            This option ensures that the system will only consider these
+            airlines. This can not be cumulated with parameter
+            excludedAirlineCodes.
+
+
+            Airlines are specified as [IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx) and are comma-separated, e.g. 6X,7X,8X
+          required: false
+          schema:
+            type: string
+            pattern: "[0-9A-Z]{2}"
+        - name: excludedAirlineCodes
+          in: query
+          description: >
+            This option ensures that the system will ignore these airlines. This
+            can not be cumulated with parameter includedAirlineCodes.
+
+
+            Airlines are specified as [IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx) and are comma-separated, e.g. 6X,7X,8X
+          required: false
+          schema:
+            type: string
+            pattern: "[0-9A-Z]{2}"
+        - name: nonStop
+          in: query
+          description: if set to true, the search will find only flights going from the
+            origin to the destination with no stop in between
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: currencyCode
+          in: query
+          description: the preferred currency for the flight offers. Currency is specified
+            in the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format,
+            e.g. EUR for Euro
+          required: false
+          schema:
+            type: string
+            pattern: "[A-Z]{3}"
+        - name: maxPrice
+          in: query
+          description: maximum price per traveler. By default, no limit is applied. If
+            specified, the value should be a positive number with no decimals
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - name: max
+          in: query
+          description: maximum number of flight offers to return. If specified, the value
+            should be greater than or equal to 1
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      x-dependencies:
+        - originLocationCode != destinationLocationCode;
+        - infants <= adults;
+        - ZeroOrOne(includedAirlineCodes, excludedAirlineCodes);
+        - adults + infants + children < 18;
+        - adults + children <= 9;
+      responses:
+        "200":
+          $ref: "#/components/responses/GETAirOffersReply"
+         "400":
+          $ref: "#/components/responses/400_Search"
+        default:
+          $ref: "#/components/responses/500"
