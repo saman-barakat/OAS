@@ -431,16 +431,8 @@ paths:
               - 4
               - 5
       x-dependencies:
-        - IF p1 THEN NOT p2;
-        - IF p2 THEN p3==5;
-        - IF NOT p1 THEN p4;
-        - IF p4 THEN p5==p7; 
-        - IF NOT (p4 OR p6) THEN p5 AND p7;
-        - OnlyOne(Or(p7, p8), Or(p9, p10));
-        - IF p7 OR p8 THEN p9 OR p10;
-        - IF p1==true THEN NOT (p2==3 OR p4==4) AND p7;
-        - IF p3 THEN AllOrNone(p1, p2);
-        - IF p8 THEN p9;
+        - OnlyOne(p1, p2, p3);
+        - IF p2 THEN p3;
       responses:
         default:
           description: Default
@@ -491,16 +483,8 @@ paths:
               - 4
               - 5
       x-dependencies:
-        - Or(p1, p2, p3, p4, p5);
-        - OnlyOne(p1, p2);
-        - p4>=p5;
-        - Or(p1==true, p4==1 OR p2);
-        - OnlyOne(p3, p5);
-        - p2!=p3;
-        - p2==p3;
-        - OnlyOne(p1 AND p3, p4 AND p5);
-        - NOT Or(p2=='example', p5==4);
-        - Or(p3=='value1', p4==1);
+        - Or(p1, p2);
+        - IF p1 OR p2 THEN p5;
       responses:
         default:
           description: Default
@@ -615,15 +599,8 @@ paths:
         default:
           description: Default
       x-dependencies:
-        - ZeroOrOne(p7 AND p8, p7 AND p8 OR p9=='value5');
-        - AllOrNone(p4 AND p5, p6 AND p7);
-        - NOT ZeroOrOne(p5==1000, p4==10000 OR p3==100000, p2==1000000);
-        - >-
-          IF p1 AND Or(p2, p3) THEN p1+p2+p4<=999 AND OnlyOne(p6, AllOrNone(p7,
-          p8));
-        - >-
-          IF NOT (p4==p5 AND ZeroOrOne(p6, p7)) THEN Or(p6=='value1', p7 AND
-          p8=='value3') OR OnlyOne(p1, p3);
+        - IF p1 THEN Or(p3, p4);
+        - IF p3 OR p4 THEN NOT p1;
   /example5:
     get:
       parameters:
@@ -699,11 +676,9 @@ paths:
         default:
           description: Default
       x-dependencies:
-        - IF NOT p1==false THEN p2=='something' AND p3==5;
-        - Or(p4=='string 1'|'string 2', p5<-200, p6==true);
-        - ZeroOrOne(p7=='another example', p8>=10);
-        - p3*p5*p8<5;
-        - Or(p1==p6, p4==p7);
+        - IF p3 THEN p3 < p8;
+        - IF p5 THEN p5 < p8;
+        - IF p3 AND p5 THEN p8 < p5;
   /example6:
     get:
       parameters:
